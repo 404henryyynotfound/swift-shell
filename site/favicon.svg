@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">SwiftShell mark</title>
+  <rect width="64" height="64" rx="16" fill="#07111f"/>
+  <path d="M16 22 L28 32 L16 42" fill="none" stroke="#4ef0c2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33 44 H47" fill="none" stroke="#ff7a6b" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="49" cy="20" r="4" fill="#ff7a6b"/>
+</svg>

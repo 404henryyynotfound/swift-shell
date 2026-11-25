@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SwiftShell is the shell language that reads like code. Variables, functions, pipelines, and friendly errors — with real Unix commands.">
+  <meta name="theme-color" content="#07111f">
+  <title>SwiftShell — The shell language that reads like code</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="SwiftShell home">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <rect width="64" height="64" rx="16" fill="#07111f"/>
+          <path d="M16 22 L28 32 L16 42" fill="none" stroke="#4ef0c2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M33 44 H48" fill="none" stroke="#ff7a6b" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="49" cy="20" r="4" fill="#ff7a6b"/>
+        </svg>
+        <span>Swift<span class="brand-accent">Shell</span></span>
+      </a>
+
+      <button class="nav-toggle" type="button" data-nav-toggle aria-controls="primary-nav" aria-expanded="false" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="primary-nav" class="primary-nav" data-nav aria-label="Primary navigation">
+        <a href="#install">Install</a>
+        <a href="#commands">swift commands</a>
+        <a href="#tour">Language tour</a>
+        <a href="#features">Features</a>
+        <a href="#playground">Playground</a>
+        <a class="nav-cta" href="#download">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> A modern shell language</p>
+          <h1 id="hero-title">The shell language that <span class="gradient-text">reads like code</span></h1>
+          <p class="hero-lede">SwiftShell gives scripts the clarity of a real programming language and the muscle of your favourite Unix tools. No glue code, no quoting gymnastics, no surprises.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#install">Install SwiftShell <span aria-hidden="true">→</span></a>
+            <a class="btn btn-ghost" href="#playground">Try the playground</a>
+          </div>
+          <p class="hero-note">Runs on macOS, Linux, and anywhere you can open a terminal.</p>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="code-card hero-code">
+            <div class="code-top">
+              <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="code-filename">hello.sh</span>
+              <span class="code-lang">SwiftShell</span>
+            </div>
+            <pre><code><span class="tok-com">$ swiftshell hello.sh</span>
+<span class="tok-key">let</span> <span class="tok-var">who</span> <span class="tok-op">=</span> <span class="tok-fn">lower</span>(<span class="tok-str">"SWIFT"</span>)
+<span class="tok-fn">echo</span> <span class="tok-str">"Hello, "</span> <span class="tok-op">+</span> <span class="tok-fn">upper</span>(<span class="tok-var">who</span>)
+
+<span class="tok-com"># → Hello, SWIFT</span></code></pre>
+          </div>
+          <div class="hero-glow" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="container hero-meta reveal" aria-label="At a glance">
+        <div><strong>0</strong><span>dependencies</span></div>
+        <div><strong>1</strong><span>readable syntax</span></div>
+        <div><strong>∞</strong><span>Unix commands</span></div>
+      </div>
+    </section>
+
+    <!-- INSTALL -->
+    <section id="install" class="section install" aria-labelledby="install-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">Get started</p>
+          <h2 id="install-title">Up and running in one command</h2>
+          <p>Pick your package manager. The CLI is a single binary with no runtime to babysit.</p>
+        </div>
+
+        <div class="install-grid">
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">npm</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-npm" aria-label="Copy npm install command">Copy</button>
+            </div>
+            <pre><code id="cmd-npm">npm install -g swift-shell</code></pre>
+            <p class="cmd-foot">Works anywhere Node.js is installed.</p>
+          </article>
+
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">apt</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-apt" aria-label="Copy apt install commands">Copy</button>
+            </div>
+            <pre><code id="cmd-apt">curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell_1.0.0_amd64.deb -o swift-shell.deb
+sudo apt install ./swift-shell.deb</code></pre>
+            <p class="cmd-foot">Grabs the latest .deb from GitHub Releases.</p>
+          </article>
+
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">snap</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-snap" aria-label="Copy snap install command">Copy</button>
+            </div>
+            <pre><code id="cmd-snap">sudo snap install swift-shell</code></pre>
+            <p class="cmd-foot">Confined, auto-updating, and easy to remove.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMANDS -->
+    <section id="commands" class="section tour" aria-labelledby="commands-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">One front door</p>
+          <h2 id="commands-title">Everything starts with <code>swift</code></h2>
+          <p>SwiftShell installs a <code>swift</code> command with dozens of subcommands. <code>swiftshell</code> stays available as an alias.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <h3>Language tools</h3>
+            <p><code>swift shell</code>, <code>swift eval</code>, <code>swift run</code>, <code>swift ast</code>, <code>swift lint</code>, <code>swift fmt</code></p>
+          </article>
+          <article class="feature-card reveal">
+            <h3>Packages built in</h3>
+            <p><code>swift install hello</code>, <code>swift registry</code>, <code>swift search</code>, <code>swift list</code>, <code>swift remove</code> — with a curated offline registry.</p>
+          </article>
+          <article class="feature-card reveal">
+            <h3>Workspace helpers</h3>
+            <p><code>swift init</code>, <code>swift new</code>, <code>swift completion</code>, <code>swift config</code>, <code>swift doctor</code>, <code>swift commands</code></p>
+          </article>
+          <article class="feature-card reveal">
+            <h3>Everyday commands</h3>
+            <p><code>swift echo</code>, <code>swift ls</code>, <code>swift cat</code>, <code>swift json</code>, <code>swift math</code> and more — unknown subcommands fall through to real Unix tools.</p>
+          </article>
+          <article class="feature-card reveal">
+            <h3>Tons of packages</h3>
+            <p>Install <code>todo</code>, <code>notes</code>, <code>sysinfo</code>, <code>gitinfo</code>, <code>backup</code>, <code>netcheck</code>, <code>jsonfmt</code>, <code>wordcount</code> and more, all local.</p>
+          </article>
+          <article class="feature-card reveal">
+            <h3>Friendly help</h3>
+            <p><code>swift help</code> and <code>swift commands</code> list everything, and mistyped commands get a suggestion.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- LANGUAGE TOUR -->
+    <section id="tour" class="section tour" aria-labelledby="tour-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">Language tour</p>
+          <h2 id="tour-title">Familiar ideas. Cleaner syntax.</h2>
+          <p>Explore the pieces that make everyday scripting feel effortless.</p>
+        </div>
+
+        <div class="tour-content reveal">
+          <div class="tabs" role="tablist" aria-label="SwiftShell language examples">
+            <button class="tab" type="button" role="tab" id="tab-vars" aria-controls="panel-vars" aria-selected="true" tabindex="0">Variables &amp; arrays</button>
+            <button class="tab" type="button" role="tab" id="tab-funcs" aria-controls="panel-funcs" aria-selected="false" tabindex="-1">Functions &amp; closures</button>
+            <button class="tab" type="button" role="tab" id="tab-pipes" aria-controls="panel-pipes" aria-selected="false" tabindex="-1">Pipelines</button>
+            <button class="tab" type="button" role="tab" id="tab-flow" aria-controls="panel-flow" aria-selected="false" tabindex="-1">Loops &amp; ifs</button>
+          </div>
+
+          <div class="tab-panels">
+            <div class="tab-panel" role="tabpanel" id="panel-vars" aria-labelledby="tab-vars" tabindex="0">
+              <div class="code-card">
+                <div class="code-top"><span class="code-filename">variables.sh</span><span class="code-lang">SwiftShell</span></div>
+                <pre><code><span class="tok-com"># Names, values, and collections</span>
+<span class="tok-key">let</span> <span class="tok-var">name</span> <span class="tok-op">=</span> <span class="tok-str">"world"</span>
+<span class="tok-key">let</span> <span class="tok-var">counts</span> <span class="tok-op">=</span> [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>]
+
+<span class="tok-fn">echo</span> <span class="tok-str">"Hello, "</span> <span class="tok-op">+</span> <span class="tok-var">name</span>
+<span class="tok-fn">echo</span> <span class="tok-fn">len</span>(<span class="tok-var">counts</span>)  <span class="tok-com"># → 3</span></code></pre>
+              </div>
+            </div>
+
+            <div class="tab-panel" role="tabpanel" id="panel-funcs" aria-labelledby="tab-funcs" tabindex="0" hidden>
+              <div class="code-card">
+                <div class="code-top"><span class="code-filename">functions.sh</span><span class="code-lang">SwiftShell</span></div>
+                <pre><code><span class="tok-com"># Define once, call anywhere</span>
+<span class="tok-key">func</span> <span class="tok-fn">greet</span>(<span class="tok-var">who</span>) {
+  <span class="tok-fn">echo</span> <span class="tok-str">"Hi, "</span> <span class="tok-op">+</span> <span class="tok-var">who</span>
+}
+
+<span class="tok-key">let</span> <span class="tok-var">shout</span> <span class="tok-op">=</span> { <span class="tok-var">text</span> <span class="tok-key">in</span> <span class="tok-fn">upper</span>(<span class="tok-var">text</span>) <span class="tok-op">+</span> <span class="tok-str">"!"</span> }
+<span class="tok-fn">echo</span> <span class="tok-fn">shout</span>(<span class="tok-str">"swift"</span>)</code></pre>
+              </div>
+            </div>
+
+            <div class="tab-panel" role="tabpanel" id="panel-pipes" aria-labelledby="tab-pipes" tabindex="0" hidden>
+              <div class="code-card">
+                <div class="code-top"><span class="code-filename">pipeline.sh</span><span class="code-lang">SwiftShell</span></div>
+                <pre><code><span class="tok-com"># Unix tools are first-class citizens</span>
+<span class="tok-fn">cat</span> notes.txt \
+  <span class="tok-op">|</span> <span class="tok-fn">grep</span> <span class="tok-str">"todo"</span> \
+  <span class="tok-op">|</span> <span class="tok-fn">wc</span> <span class="tok-op">-</span>l <span class="tok-op">&gt;</span> count.txt
+
+<span class="tok-fn">echo</span> <span class="tok-str">"-- updated --"</span> <span class="tok-op">&gt;&gt;</span> count.txt</code></pre>
+              </div>
+            </div>
+
+            <div class="tab-panel" role="tabpanel" id="panel-flow" aria-labelledby="tab-flow" tabindex="0" hidden>
+              <div class="code-card">
+                <div class="code-top"><span class="code-filename">control.sh</span><span class="code-lang">SwiftShell</span></div>
+                <pre><code><span class="tok-key">for</span> <span class="tok-var">i</span> <span class="tok-key">in</span> <span class="tok-fn">range</span>(<span class="tok-num">1</span>, <span class="tok-num">4</span>) {
+  <span class="tok-key">if</span> <span class="tok-var">i</span> <span class="tok-op">%</span> <span class="tok-num">2</span> <span class="tok-op">==</span> <span class="tok-num">0</span> {
+    <span class="tok-fn">echo</span> <span class="tok-fn">upper</span>(<span class="tok-str">"even "</span> <span class="tok-op">+</span> <span class="tok-var">i</span>)
+  } <span class="tok-key">else</span> {
+    <span class="tok-fn">echo</span> <span class="tok-str">"odd "</span> <span class="tok-op">+</span> <span class="tok-var">i</span>
+  }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section features" aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">Why SwiftShell</p>
+          <h2 id="features-title">Everything a script needs. Nothing it doesn't.</h2>
+          <p>Small enough to learn in an afternoon, expressive enough to keep using for years.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="8" height="6" rx="2"/><rect x="13" y="14" width="8" height="6" rx="2"/><path d="M7 10v4a2 2 0 0 0 2 2h4"/></svg>
+            </span>
+            <h3>Variables &amp; arrays</h3>
+            <p>Inferred <code>let</code> bindings and first-class arrays. Store data once and use it everywhere without boilerplate.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5 3 12l5 7"/><path d="m16 5 5 7-5 7"/><path d="M14 4 10 20"/></svg>
+            </span>
+            <h3>Functions &amp; closures</h3>
+            <p>Name a block with <code>func</code>, or write a compact closure inline and pass it around like any other value.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10"/><path d="m11 4 3 3-3 3"/><path d="M20 17H10"/><path d="m13 14-3 3 3 3"/></svg>
+            </span>
+            <h3>Pipelines &amp; redirection</h3>
+            <p><code>|</code>, <code>&gt;</code>, and <code>&gt;&gt;</code> are part of the language, so composing commands reads naturally.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/><circle cx="18" cy="15" r="3"/></svg>
+            </span>
+            <h3>Loops &amp; conditionals</h3>
+            <p>Readable <code>for … in</code> loops, <code>if</code>/<code>else</code>, and familiar comparison operators with real block scope.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7 9 3 3-3 3"/><path d="M13 15h4"/></svg>
+            </span>
+            <h3>Real Unix commands</h3>
+            <p>Call <code>grep</code>, <code>curl</code>, <code>jq</code>, or anything on your <code>PATH</code> directly — no wrappers or escaping.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5"/><circle cx="12" cy="17" r=".8" fill="currentColor" stroke="none"/></svg>
+            </span>
+            <h3>Friendly errors</h3>
+            <p>Line numbers, clear messages, and helpful hints instead of a wall of cryptic interpreter output.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYGROUND -->
+    <section id="playground" class="section playground" aria-labelledby="playground-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">Playground</p>
+          <h2 id="playground-title">Write it. Run it. Right here.</h2>
+          <p>A tiny in-browser interpreter for a safe subset of SwiftShell — no install, no network, no risk.</p>
+        </div>
+
+        <div class="playground-grid reveal">
+          <div class="pane editor-pane">
+            <div class="pane-head">
+              <label for="code-input">Editor</label>
+              <div class="examples" aria-label="Example programs">
+                <button type="button" class="chip" data-example="hello">Hello</button>
+                <button type="button" class="chip" data-example="math">Math</button>
+                <button type="button" class="chip" data-example="loop">Loop</button>
+              </div>
+            </div>
+            <textarea id="code-input" spellcheck="false" aria-describedby="playground-hint"># Try me — edit and press Run
+let name = "swift"
+let count = len(name)
+
+echo "Hello, " + upper(name)
+echo "Letters: " + count
+
+for i in range(1, 4) {
+  if i % 2 == 0 {
+    echo "even: " + i
+  } else {
+    echo "odd: " + i
+  }
+}</textarea>
+            <div class="pane-foot">
+              <div class="pane-actions">
+                <button class="btn btn-primary btn-sm" type="button" id="run-code">Run code</button>
+                <button class="btn btn-ghost btn-sm" type="button" id="reset-code">Reset</button>
+              </div>
+              <p id="playground-hint" class="hint">Tip: <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd> to run</p>
+            </div>
+          </div>
+
+          <div class="pane output-pane">
+            <div class="pane-head">
+              <span>Output</span>
+              <span class="status" aria-hidden="true"><i></i> local</span>
+            </div>
+            <pre id="playground-output" aria-live="polite" aria-label="Program output">Ready. Edit the code and press Run.</pre>
+            <div class="pane-foot output-foot">
+              <p>Supported: <code>let</code>, <code>echo</code>, arithmetic, <code>upper</code>/<code>lower</code>/<code>len</code>, <code>for … in range()</code>, and <code>if</code>/<code>else</code>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section id="download" class="section download" aria-labelledby="download-title">
+      <div class="container">
+        <div class="download-card reveal">
+          <div class="download-copy">
+            <p class="section-kicker">Ready when you are</p>
+            <h2 id="download-title">Make SwiftShell your default today</h2>
+            <p>Every release is published on GitHub, with signed builds for your platform. Pick a package below and start scripting in seconds.</p>
+          </div>
+          <div class="download-links">
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest">
+              <span class="download-icon" aria-hidden="true">◈</span>
+              <span><strong>macOS</strong><small>Universal binary</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest">
+              <span class="download-icon" aria-hidden="true">▤</span>
+              <span><strong>Linux</strong><small>x86_64 · .deb · snap</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest">
+              <span class="download-icon" aria-hidden="true">⌘</span>
+              <span><strong>All releases</strong><small>Source &amp; checksums</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="SwiftShell home">
+          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <rect width="64" height="64" rx="16" fill="#07111f"/>
+            <path d="M16 22 L28 32 L16 42" fill="none" stroke="#4ef0c2" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M33 44 H48" fill="none" stroke="#ff7a6b" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="49" cy="20" r="4" fill="#ff7a6b"/>
+          </svg>
+          <span>Swift<span class="brand-accent">Shell</span></span>
+        </a>
+        <p>The shell language that reads like code.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#install">Install</a>
+        <a href="#commands">swift commands</a>
+        <a href="#tour">Language tour</a>
+        <a href="#playground">Playground</a>
+        <a href="https://github.com/404henryyynotfound/swift-shell/releases/latest">Releases</a>
+      </nav>
+      <p class="copyright">© 2026 SwiftShell.<br>Built for the shell, made for humans.</p>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

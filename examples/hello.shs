@@ -1,0 +1,10 @@
+# hello.shs — a friendly tour of the language
+# Run with: node bin/swiftshell.js examples/hello.shs
+
+let name = "world"
+
+echo "Hello, ${name}!"
+echo "Uppercased: ${name.upper()}"
+echo "Arithmetic: ${math("2 + 3 * 4")}"
+echo "Array: ${[1, 2, 3]}"
+echo "Script arguments: ${args()}"

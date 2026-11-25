@@ -1,0 +1,20 @@
+# files/report.shs — inspect a directory with SwiftShell
+# Run from the swift-shell directory with:
+#   node bin/swiftshell.js examples/files/report.shs
+
+echo "Directory report for ${pwd()}"
+let entries = ls(".")
+echo "entries: ${len(entries)}"
+
+for entry in entries {
+  echo "  - ${entry}"
+}
+
+if (exists("README.md")) {
+  echo "README.md: present (${len(read("README.md"))} characters)"
+} else {
+  echo "README.md: missing"
+}
+
+# A pipeline sends stdout from one command to stdin of the next.
+echo "a small pipeline" | upper

@@ -1,0 +1,132 @@
+name: Release SwiftShell
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: version
+        run: |
+          if [[ "$GITHUB_REF_NAME" == v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+            npm version "$VERSION" --no-git-tag-version --allow-same-version
+          else
+            VERSION="$(node -p "require('./package.json').version")"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Test
+        run: npm test
+      - name: Build source archive
+        run: |
+          mkdir -p dist
+          VERSION="${{ steps.version.outputs.version }}"
+          tar -czf "dist/swift-shell-${VERSION}.tar.gz" \
+            bin src registry.json package.json README.md LICENSE examples
+          (cd dist && sha256sum "swift-shell-${VERSION}.tar.gz" > "swift-shell-${VERSION}.tar.gz.sha256")
+          cp pi-apps/Swift-Shell.zip dist/Swift-Shell.zip
+          (cd dist && sha256sum Swift-Shell.zip > Swift-Shell.zip.sha256)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: archive
+          path: dist/*
+
+  deb:
+    runs-on: ubuntu-latest
+    needs: archive
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bash packaging/build-deb.sh "${{ matrix.arch }}" dist/packages
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb-${{ matrix.arch }}
+          path: dist/packages/*
+
+  npm:
+    runs-on: ubuntu-latest
+    needs: archive
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: npm test
+      - name: Align version with tag
+        if: startsWith(github.ref_name, 'v')
+        run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
+      - name: Publish
+        if: ${{ env.NPM_TOKEN != '' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+      - name: Skip notice
+        if: ${{ env.NPM_TOKEN == '' }}
+        run: echo "NPM_TOKEN not configured; skipping npm publish"
+
+  snap:
+    runs-on: ${{ matrix.runner }}
+    needs: archive
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-22.04
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Align version with tag
+        if: startsWith(github.ref_name, 'v')
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i "s/^version: .*/version: '$VERSION'/" snapcraft.yaml
+      - id: snapcraft
+        uses: snapcore/action-build@v1
+      - run: sha256sum "${{ steps.snapcraft.outputs.snap }}" > "${{ steps.snapcraft.outputs.snap }}.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: snap-${{ matrix.arch }}
+          path: |
+            ${{ steps.snapcraft.outputs.snap }}
+            ${{ steps.snapcraft.outputs.snap }}.sha256
+      - name: Publish to Snap Store
+        if: ${{ env.SNAPCRAFT_STORE_CREDENTIALS != '' }}
+        run: snapcraft upload --release=stable "${{ steps.snapcraft.outputs.snap }}"
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [archive, deb, snap]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+          generate_release_notes: true
+          fail_on_unmatched_files: false

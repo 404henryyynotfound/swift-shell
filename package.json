@@ -1,0 +1,37 @@
+{
+  "name": "swift-shell",
+  "version": "1.0.0",
+  "description": "SwiftShell — a small, dependency-free shell language with an offline package manager and the swift command suite",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "src/index.js",
+  "bin": {
+    "swift": "bin/swift.js",
+    "swiftshell": "bin/swiftshell.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "test/",
+    "examples/",
+    "registry.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "shell",
+    "language",
+    "interpreter",
+    "cli",
+    "scripting",
+    "package-manager"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "for f in bin/*.js src/*.js test/*.test.js; do node --check \"$f\" || exit 1; done",
+    "demo": "node bin/swift.js run examples/hello.shs",
+    "registry:list": "node bin/swift.js registry"
+  }
+}

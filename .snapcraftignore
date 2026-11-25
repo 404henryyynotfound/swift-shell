@@ -1,0 +1,7 @@
+.git/
+node_modules/
+site/.surge/
+dist/
+test/
+packaging/
+*.log

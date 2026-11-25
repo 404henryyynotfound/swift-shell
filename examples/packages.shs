@@ -1,0 +1,9 @@
+# packages.shs — install and use a bundled package, entirely offline
+# Run with: node bin/swiftshell.js examples/packages.shs
+# Set SWIFTSHELL_HOME to choose where packages are installed.
+
+install("hello")
+let message = run("hello", "from", "an", "example")
+echo message
+echo "installed packages: ${len(packages())}"
+echo "registry entries: ${len(registry())}"

@@ -1,0 +1,187 @@
+{
+  "name": "swift-shell-bundled",
+  "description": "Curated offline packages bundled with SwiftShell. No network access is ever used.",
+  "version": "1.0.0",
+  "packages": [
+    {
+      "name": "hello",
+      "version": "1.0.0",
+      "description": "A friendly greeting and an argument echo.",
+      "category": "demo",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "greeting",
+        "starter",
+        "demo"
+      ],
+      "files": {
+        "main.shs": "# hello - a tiny starter package\nlet greeting = \"Hello from the SwiftShell registry!\"\necho greeting\necho \"Arguments: ${args()}\"\n"
+      }
+    },
+    {
+      "name": "sysinfo",
+      "version": "1.0.0",
+      "description": "Print platform, architecture, Node and working directory details.",
+      "category": "system",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "system",
+        "info",
+        "platform"
+      ],
+      "files": {
+        "main.shs": "# sysinfo - quick system report\necho \"SwiftShell ${version()}\"\necho \"platform:     ${$(uname -s)}\"\necho \"architecture: ${$(uname -m)}\"\necho \"node:         ${$(node --version)}\"\necho \"cwd:          ${pwd()}\"\n"
+      }
+    },
+    {
+      "name": "todo",
+      "version": "1.0.2",
+      "description": "A tiny persistent command-line todo list.",
+      "category": "productivity",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "todo",
+        "tasks",
+        "productivity"
+      ],
+      "files": {
+        "main.shs": "# todo - a persistent task list\nlet dataDir = home() + \"/data\"\nmkdir -p dataDir\nlet store = dataDir + \"/todo.txt\"\nlet a = args()\nlet action = \"list\"\nif (len(a) > 0) {\n  action = a[0]\n}\n\nif (action == \"add\") {\n  if (len(a) < 2) {\n    echo \"usage: todo add <text>\"\n  } else {\n    echo a[1] >> store\n    echo \"added: ${a[1]}\"\n  }\n} else {\n  if (action == \"done\") {\n    if (len(a) < 2) {\n      echo \"usage: todo done <number>\"\n    } else {\n      let items = []\n      if (exists(store)) {\n        items = split(read(store), \"\\n\")\n      }\n      let wanted = math(a[1])\n      let kept = []\n      for i in range(0, len(items)) {\n        if (i != wanted - 1) {\n          kept = kept + [items[i]]\n        }\n      }\n      echo \"\" > store\n      for item in kept {\n        echo item >> store\n      }\n      echo \"removed item ${wanted}\"\n    }\n  } else {\n    if (action == \"clear\") {\n      echo \"\" > store\n      echo \"todo list cleared\"\n    } else {\n      let items = []\n      if (exists(store)) {\n        items = split(read(store), \"\\n\")\n      }\n      if (len(items) == 0) {\n        echo \"Nothing to do. Enjoy your day!\"\n      } else {\n        for item in items {\n          echo item\n        }\n      }\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "name": "notes",
+      "version": "1.0.1",
+      "description": "Save, list and search plain-text notes.",
+      "category": "productivity",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "notes",
+        "search",
+        "productivity"
+      ],
+      "files": {
+        "main.shs": "# notes - simple persistent notes\nlet dataDir = home() + \"/data\"\nmkdir -p dataDir\nlet store = dataDir + \"/notes.txt\"\nlet a = args()\n\nif (len(a) > 0) {\n  if (a[0] == \"add\") {\n    if (len(a) < 2) {\n      echo \"usage: notes add <text>\"\n    } else {\n      echo a[1] >> store\n      echo \"saved note\"\n    }\n  } else {\n    if (a[0] == \"find\") {\n      if (len(a) < 2) {\n        echo \"usage: notes find <term>\"\n      } else {\n        if (exists(store)) {\n          let notes = split(read(store), \"\\n\")\n          for note in notes {\n            if (contains(note, a[1])) {\n              echo note\n            }\n          }\n        } else {\n          echo \"No notes yet.\"\n        }\n      }\n    } else {\n      echo \"usage: notes add <text> | notes list | notes find <term>\"\n    }\n  }\n} else {\n  if (exists(store)) {\n    cat store\n  } else {\n    echo \"No notes yet.\"\n  }\n}\n"
+      }
+    },
+    {
+      "name": "wordcount",
+      "version": "1.0.0",
+      "description": "Count lines, words and characters in a file or stdin.",
+      "category": "text",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "text",
+        "count",
+        "words"
+      ],
+      "files": {
+        "main.shs": "# wordcount - count lines, words and characters\nlet a = args()\nlet input = \"\"\nif (len(a) > 0) {\n  input = read(a[0])\n} else {\n  input = read()\n}\nlet words = split(input)\nlet lines = split(input, \"\\n\")\necho \"lines:      ${len(lines)}\"\necho \"words:      ${len(words)}\"\necho \"characters: ${len(input)}\"\n"
+      }
+    },
+    {
+      "name": "jsonfmt",
+      "version": "1.0.0",
+      "description": "Pretty-print a JSON document from an argument or stdin.",
+      "category": "developers",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "json",
+        "format",
+        "developers"
+      ],
+      "files": {
+        "main.shs": "# jsonfmt - pretty-print JSON\nlet a = args()\nlet source = \"\"\nif (len(a) > 0) {\n  source = a[0]\n} else {\n  source = read()\n}\nif (source == \"\") {\n  echo \"usage: jsonfmt '<json>'\"\n} else {\n  echo json(json(\"--parse\", source))\n}\n"
+      }
+    },
+    {
+      "name": "treeview",
+      "version": "1.0.0",
+      "description": "Draw a small directory tree (up to four levels deep).",
+      "category": "filesystem",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "tree",
+        "files",
+        "directories"
+      ],
+      "files": {
+        "main.shs": "# treeview - a compact directory tree\nfn tree(dir, prefix, depth) {\n  if (depth > 4) {\n    return\n  }\n  for entry in ls(dir) {\n    let parts = split(entry, \"/\")\n    let name = parts[len(parts) - 1]\n    let child = dir + \"/\" + name\n    echo (prefix + \"|-- \" + name)\n    if (isdir(child)) {\n      tree(child, prefix + \"  \", depth + 1)\n    }\n  }\n}\nlet a = args()\nlet root = \".\"\nif (len(a) > 0) {\n  root = a[0]\n}\necho root\ntree(root, \"\", 0)\n"
+      }
+    },
+    {
+      "name": "gitinfo",
+      "version": "1.0.0",
+      "description": "Show the current git branch, commit and working tree status.",
+      "category": "developers",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "git",
+        "vcs",
+        "developers"
+      ],
+      "files": {
+        "main.shs": "# gitinfo - current repository summary\necho \"branch:   ${$(git rev-parse --abbrev-ref HEAD)}\"\necho \"commit:   ${$(git rev-parse --short HEAD)}\"\nlet status = $(git status --short)\nif (status == \"\") {\n  echo \"status:   clean\"\n} else {\n  echo \"status:\"\n  echo status\n}\n"
+      }
+    },
+    {
+      "name": "backup",
+      "version": "1.0.0",
+      "description": "Copy a file or directory into a timestamped backup folder.",
+      "category": "filesystem",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "backup",
+        "copy",
+        "filesystem"
+      ],
+      "files": {
+        "main.shs": "# backup - timestamped local copy\nlet a = args()\nif (len(a) < 1) {\n  echo \"usage: backup <path>\"\n} else {\n  let source = a[0]\n  let stamp = $(date +%Y%m%d-%H%M%S)\n  let targetDir = home() + \"/backups\"\n  mkdir -p targetDir\n  let target = targetDir + \"/\" + stamp\n  cp -R source target\n  echo \"backed up ${source} to ${target}\"\n}\n"
+      }
+    },
+    {
+      "name": "countdown",
+      "version": "1.0.0",
+      "description": "Count down from a number of seconds, then print Go!",
+      "category": "demo",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "timer",
+        "countdown",
+        "demo"
+      ],
+      "files": {
+        "main.shs": "# countdown - a tiny timer\nlet a = args()\nif (len(a) == 0) {\n  echo \"usage: countdown <seconds>\"\n} else {\n  let n = math(a[0])\n  while (n > 0) {\n    echo n\n    sleep 1\n    n = n - 1\n  }\n  echo \"Go!\"\n}\n"
+      }
+    },
+    {
+      "name": "netcheck",
+      "version": "1.0.0",
+      "description": "Quickly ping a host to see whether it responds.",
+      "category": "network",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "network",
+        "ping",
+        "check"
+      ],
+      "files": {
+        "main.shs": "# netcheck - simple host reachability check\nlet a = args()\nlet host = \"example.com\"\nif (len(a) > 0) {\n  host = a[0]\n}\necho \"checking ${host}\"\nlet result = $(ping -c 1 -W 2 host)\nif (result == \"\") {\n  echo \"no response from ${host}\"\n} else {\n  echo \"${host} responded\"\n}\n"
+      }
+    },
+    {
+      "name": "dice",
+      "version": "1.0.0",
+      "description": "Roll one or more dice with a configurable number of sides.",
+      "category": "games",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "dice",
+        "random",
+        "games"
+      ],
+      "files": {
+        "main.shs": "# dice - roll dice locally\nlet a = args()\nlet sides = 6\nlet count = 1\nif (len(a) > 0) {\n  sides = math(a[0])\n}\nif (len(a) > 1) {\n  count = math(a[1])\n}\nfor i in range(0, count) {\n  let roll = random(sides) + 1\n  echo roll\n}\n"
+      }
+    }
+  ]
+}

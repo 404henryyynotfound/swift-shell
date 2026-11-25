@@ -1,0 +1,22 @@
+# automation.shs — deterministic, AI-free automation
+# Run with: node bin/swiftshell.js examples/automation.shs
+
+fn label(text) {
+  return "[auto] " + text
+}
+
+let jobs = ["lint", "test", "build"]
+let results = []
+
+for job in jobs {
+  results = results + [label(job.upper())]
+}
+
+for result in results {
+  echo result
+}
+
+let steps = sort([3, 1, 2])
+echo "steps: ${steps}"
+echo "total steps: ${len(steps)}"
+echo "status: ${jobs.len() == 3 && steps[0] == 1}"

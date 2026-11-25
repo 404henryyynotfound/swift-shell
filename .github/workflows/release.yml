@@ -118,9 +118,136 @@ jobs:
         if: ${{ env.SNAPCRAFT_STORE_CREDENTIALS != '' }}
         run: snapcraft upload --release=stable "${{ steps.snapcraft.outputs.snap }}"
 
+  # @yao-pkg/pkg 6.26.0 supports node22/node24/latest triples (not node20).
+  # --no-bytecode avoids cross-architecture bytecode issues and keeps the
+  # standard packaging mode working on every runner. If a target cannot be
+  # built, a source + launcher tarball is published instead.
+  binaries:
+    runs-on: ${{ matrix.runner }}
+    needs: archive
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            arch: x64
+            target: node22-linux-x64
+            base: swift-shell-linux-x64
+            binary: swift-shell-linux-x64
+            runner: ubuntu-latest
+          - platform: linux
+            arch: arm64
+            target: node22-linux-arm64
+            base: swift-shell-linux-arm64
+            binary: swift-shell-linux-arm64
+            runner: ubuntu-latest
+          - platform: macos
+            arch: x64
+            target: node22-macos-x64
+            base: swift-shell-macos-x64
+            binary: swift-shell-macos-x64
+            runner: macos-15-intel
+          - platform: macos
+            arch: arm64
+            target: node22-macos-arm64
+            base: swift-shell-macos-arm64
+            binary: swift-shell-macos-arm64
+            runner: macos-15
+          - platform: windows
+            arch: x64
+            target: node22-win-x64
+            base: swift-shell-windows-x64
+            binary: swift-shell-windows-x64.exe
+            runner: windows-latest
+          - platform: windows
+            arch: arm64
+            target: node22-win-arm64
+            base: swift-shell-windows-arm64
+            binary: swift-shell-windows-arm64.exe
+            runner: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Align version with tag
+        if: startsWith(github.ref_name, 'v')
+        run: npm version "${GITHUB_REF_NAME#v}" --no-git-tag-version --allow-same-version
+      - name: Build standalone binary
+        id: build
+        continue-on-error: true
+        env:
+          TARGET: ${{ matrix.target }}
+          BINARY: ${{ matrix.binary }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          mkdir -p dist
+          npx --yes @yao-pkg/pkg@6.26.0 bin/swift.js \
+            --target "$TARGET" \
+            --output "dist/$BINARY" \
+            --no-bytecode --public-packages '*' --public
+          if [[ "$PLATFORM" == "macos" ]]; then
+            codesign --force --sign - "dist/$BINARY" || echo "Keeping pkg's ad-hoc signature"
+          fi
+          test -s "dist/$BINARY"
+      - name: Package source fallback
+        if: steps.build.outcome != 'success'
+        env:
+          BASE: ${{ matrix.base }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          STAGE="dist/$BASE"
+          rm -rf "$STAGE"
+          mkdir -p "$STAGE"
+          cp -R bin src examples registry.json package.json README.md LICENSE "$STAGE/"
+          if [[ "$PLATFORM" == "windows" ]]; then
+            printf '%s\n' '@echo off' 'node "%~dp0bin\swift.js" %*' > "$STAGE/swift.cmd"
+            printf '%s\n' '@echo off' 'node "%~dp0bin\swiftshell.js" %*' > "$STAGE/swiftshell.cmd"
+          else
+            printf '%s\n' '#!/bin/sh' 'DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)' 'exec node "$DIR/bin/swift.js" "$@"' > "$STAGE/swift"
+            printf '%s\n' '#!/bin/sh' 'DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)' 'exec node "$DIR/bin/swiftshell.js" "$@"' > "$STAGE/swiftshell"
+            chmod +x "$STAGE/swift" "$STAGE/swiftshell"
+          fi
+          tar -czf "dist/${BASE}.tar.gz" -C dist "$BASE"
+      - name: Select asset name
+        id: asset
+        env:
+          BUILD_OUTCOME: ${{ steps.build.outcome }}
+          BINARY: ${{ matrix.binary }}
+          BASE: ${{ matrix.base }}
+        run: |
+          if [[ "$BUILD_OUTCOME" == "success" ]]; then
+            echo "name=$BINARY" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=${BASE}.tar.gz" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Checksum asset
+        env:
+          ASSET: ${{ steps.asset.outputs.name }}
+        run: |
+          set -euo pipefail
+          cd dist
+          if command -v sha256sum >/dev/null 2>&1; then
+            sha256sum "$ASSET" > "$ASSET.sha256"
+          else
+            shasum -a 256 "$ASSET" > "$ASSET.sha256"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            dist/${{ steps.asset.outputs.name }}
+            dist/${{ steps.asset.outputs.name }}.sha256
+          if-no-files-found: error
+
   release:
     runs-on: ubuntu-latest
-    needs: [archive, deb, snap]
+    needs: [archive, deb, snap, binaries]
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -137,8 +264,16 @@ jobs:
             if gh release create "$TAG" --generate-notes --title "$TAG"; then break; fi
             sleep $((attempt * 5))
           done
+          # Artifact extraction can create subdirectories (for example
+          # release-assets/packages/). Upload regular files only, otherwise
+          # `gh release upload` fails with "is a directory".
+          mapfile -t ASSETS < <(find release-assets -type f -print)
+          if [ "${#ASSETS[@]}" -eq 0 ]; then
+            echo "No release assets found" >&2
+            exit 1
+          fi
           for attempt in 1 2 3; do
-            if gh release upload "$TAG" release-assets/* --clobber; then exit 0; fi
+            if gh release upload "$TAG" "${ASSETS[@]}" --clobber; then exit 0; fi
             sleep $((attempt * 5))
           done
           echo "Failed to upload release assets" >&2

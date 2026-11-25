@@ -4,13 +4,70 @@ SwiftShell is a small, original terminal/shell **language** and interpreter writ
 
 - `swift` — a full command front door (50+ subcommands, builtin passthrough, workspace tools). **Every command starts with `swift`.**
 - `swiftshell` — a compatibility alias with the same REPL and script runner.
-- A package manager with a **bundled, offline registry of 12 packages** — no network access, ever.
+- A package manager with a **bundled, offline registry of 13 packages** — no network access, ever.
 
 > **This project is unrelated to Apple Swift and to the separate `swift-browser` / `swift-tech` products.** It does not import, use or modify them. The `swift` command here is SwiftShell's own CLI.
 
 ## Install
 
-### npm
+SwiftShell is one `swift` CLI. Pick the route that fits your machine. Every
+tagged release publishes stable asset names, so the `latest/download` links
+below always point at the newest build. Each asset has a `.sha256` companion.
+
+### Standalone binaries (macOS, Linux, Windows)
+
+**Linux x64** — [swift-shell-linux-x64](https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-x64)
+
+```sh
+curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-x64 -o swift
+chmod +x swift
+./swift --version
+```
+
+**Linux arm64** — [swift-shell-linux-arm64](https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-arm64)
+
+```sh
+curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-arm64 -o swift
+chmod +x swift
+./swift --version
+```
+
+**macOS x64 (Intel)** — [swift-shell-macos-x64](https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-x64)
+
+```sh
+curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-x64 -o swift
+chmod +x swift
+./swift --version
+```
+
+**macOS arm64 (Apple Silicon)** — [swift-shell-macos-arm64](https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-arm64)
+
+```sh
+curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-arm64 -o swift
+chmod +x swift
+./swift --version
+```
+
+**Windows x64** — [swift-shell-windows-x64.exe](https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-x64.exe)
+
+```powershell
+Invoke-WebRequest https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-x64.exe -OutFile swift.exe
+.\swift.exe --version
+```
+
+**Windows arm64** — [swift-shell-windows-arm64.exe](https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-arm64.exe)
+
+```powershell
+Invoke-WebRequest https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-arm64.exe -OutFile swift.exe
+.\swift.exe --version
+```
+
+If a target cannot be built in a release, a `swift-shell-<platform>-<arch>.tar.gz`
+fallback is published instead: it contains the JavaScript sources plus `swift`
+and `swiftshell` launcher scripts. Verify any download with the matching
+`.sha256` file.
+
+### npm (anywhere Node.js 18+ runs)
 
 ```sh
 npm i -g swift-shell
@@ -20,12 +77,12 @@ swift --version   # swiftshell --version is the same CLI
 
 ### apt (.deb from GitHub releases)
 
-Download the `.deb` from the GitHub releases page and install it:
-
 ```sh
 curl -LO https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell_1.0.0_amd64.deb
 sudo apt install ./swift-shell_1.0.0_amd64.deb
 ```
+
+For arm64, use `swift-shell_1.0.0_arm64.deb` in the same URL.
 
 ### snap
 
@@ -33,13 +90,20 @@ sudo apt install ./swift-shell_1.0.0_amd64.deb
 sudo snap install swift-shell
 ```
 
-### From a clone
+### Pi-Apps
+
+Download [Swift-Shell.zip](https://github.com/404henryyynotfound/swift-shell/releases/latest/download/Swift-Shell.zip) and import the app into Pi-Apps, or run its install script directly.
+
+### From a clone / other platforms
 
 ```sh
 cd swift-shell
 node bin/swift.js eval 'echo "hello"'
 node bin/swift.js commands
 ```
+
+npm and the [source archive](https://github.com/404henryyynotfound/swift-shell/releases/latest)
+cover everything else that can run Node.js 18+.
 
 To run installed package commands directly from your shell, add the launcher directory to your `PATH`:
 
@@ -175,6 +239,8 @@ swift registry                  # bundled offline catalog
 swift search git                # search names, descriptions, keywords
 swift info dice                 # package details
 swift run-pkg hello             # run an installed package
+swift install swiftfetch        # bundled neofetch-style system report
+swift run-pkg swiftfetch        # or simply: swift swiftfetch
 swift update hello              # update from the bundled registry
 swift remove todo               # alias: swift uninstall todo
 ```
@@ -208,12 +274,14 @@ An unknown subcommand first tries a builtin, then a normal external executable. 
 
 ## Packages
 
-The registry is bundled in `registry.json`: **12 curated packages**, all written in SwiftShell itself. Installing copies local source text; it never downloads or runs remote code.
+The registry is bundled in `registry.json`: **13 curated packages**, all written in SwiftShell itself. Installing copies local source text; it never downloads or runs remote code.
 
 ```sh
 swift registry
 swift install hello
 swift run-pkg hello
+swift install swiftfetch
+swift run-pkg swiftfetch        # prints a neofetch-style system readout
 swift install todo
 ~/.swift-shell/bin/todo add "try SwiftShell"
 ~/.swift-shell/bin/todo
@@ -233,7 +301,9 @@ pkg-update("hello")
 
 Other package builtins: `uninstall` / `remove`. Installed packages live in `$SWIFTSHELL_HOME/packages/<name>/<version>/` with a manifest at `$SWIFTSHELL_HOME/installed.json` and launchers in `$SWIFTSHELL_HOME/bin/`. `SWIFTSHELL_HOME` overrides the default `~/.swift-shell`. Manifest writes are atomic.
 
-Bundled packages: `hello`, `sysinfo`, `todo`, `notes`, `wordcount`, `jsonfmt`, `treeview`, `gitinfo`, `backup`, `countdown`, `netcheck`, `dice`.
+Bundled packages: `hello`, `sysinfo`, `swiftfetch`, `todo`, `notes`, `wordcount`, `jsonfmt`, `treeview`, `gitinfo`, `backup`, `countdown`, `netcheck`, `dice`.
+
+`swiftfetch` is also a first-class builtin/command: `swift swiftfetch` prints the same readout as `swift install swiftfetch && swift run-pkg swiftfetch`, and `swiftfetch` works inside scripts and the REPL. It reports user@host, OS, kernel, uptime, shell, terminal, CPU model/cores, memory, disk, local IP, an ASCII SwiftShell logo and a colour-block strip. Use `--no-color` for plain output.
 
 ## Grammar / syntax reference
 
@@ -271,7 +341,7 @@ Identifiers match `[A-Za-z_][A-Za-z0-9_]*`. Numbers are decimal integers, floats
 
 ## Builtins
 
-`echo`, `printf`, `pwd`, `ls`, `cd`, `cat`, `env`, `set`, `upper`, `lower`, `trim`, `len`, `split`, `join`, `sort`, `range`, `contains`, `json`, `time`, `sleep`, `exists`, `isdir`, `glob`, `read`, `math`, `random`, `args`, `home`, `version`, `help`, `exit`, plus the package commands listed above.
+`echo`, `printf`, `pwd`, `ls`, `cd`, `cat`, `env`, `set`, `upper`, `lower`, `trim`, `len`, `split`, `join`, `sort`, `range`, `contains`, `json`, `time`, `sleep`, `exists`, `isdir`, `glob`, `read`, `math`, `random`, `args`, `home`, `version`, `swiftfetch`, `help`, `exit`, plus the package commands listed above.
 
 Most builtins work both as commands (`upper hello`) and as expressions (`upper("hello")`). Text transforms read pipeline stdin when called with no arguments, e.g. `echo hi | upper`.
 

@@ -24,6 +24,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const { PackageManager, PackageError } = require('./packages');
+const {
+  renderFetch,
+  collectSnapshot,
+  colorOptionFromArgs,
+  defaultColor,
+} = require('./swiftfetch');
 
 const VERSION = '1.0.0';
 
@@ -755,12 +761,21 @@ const builtins = {
     return VERSION;
   },
 
+  swiftfetch: (ctx, args) => {
+    const requested = colorOptionFromArgs(args || []);
+    const color = requested === undefined ? defaultColor() : requested;
+    const text = renderFetch(collectSnapshot({ home: ctx.home }), { color });
+    const value = text.replace(/\n$/, '');
+    if (ctx.asCommand) writeln(ctx, value);
+    return value;
+  },
+
   help: (ctx) => {
     const lines = [
       'SwiftShell builtins:',
       ...Object.keys(builtins).map((name) => `  ${name}`),
       '',
-      'Package commands: install, uninstall, remove, packages, registry, search, info, run, pkg-update',
+      'Package commands: install, uninstall, remove, packages, registry, search, info, run, pkg-update, swiftfetch',
       'Try: echo "hello $name" | upper',
       'Docs: see README.md in the swift-shell package.',
     ];

@@ -31,7 +31,7 @@ test('bundled registry is complete and offline', (t) => {
   const registry = new PackageManager({ home }).list();
   assert.ok(registry.length >= 12);
   const names = registry.map((entry) => entry.name);
-  for (const expected of ['hello', 'sysinfo', 'todo', 'notes', 'wordcount', 'jsonfmt',
+  for (const expected of ['hello', 'sysinfo', 'swiftfetch', 'todo', 'notes', 'wordcount', 'jsonfmt',
     'treeview', 'gitinfo', 'backup', 'countdown', 'netcheck', 'dice']) {
     assert.ok(names.includes(expected), `missing package: ${expected}`);
   }

@@ -32,6 +32,12 @@ const {
   formatSource,
   suggest,
 } = require('../src/cli');
+const {
+  renderFetch,
+  collectSnapshot,
+  colorOptionFromArgs,
+  defaultColor,
+} = require('../src/swiftfetch');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -200,6 +206,13 @@ define(['list', 'installed'], 'Packages', 'List installed packages', (_args, ctx
 
 define(['registry'], 'Packages', 'List packages in the bundled offline registry', (_args, ctx) => {
   list(ctx.pm.list().map((item) => `${item.name}@${item.version} — ${item.description}`));
+  return 0;
+});
+
+define(['swiftfetch'], 'Packages', 'Print a neofetch-style SwiftShell system report', (args, ctx) => {
+  const requested = colorOptionFromArgs(args);
+  const color = requested === undefined ? defaultColor() : requested;
+  process.stdout.write(renderFetch(collectSnapshot({ home: ctx.home }), { color }));
   return 0;
 });
 
@@ -402,6 +415,7 @@ define(['help'], 'Workspace', 'Show help (optionally for one command)', (args) =
     '',
     'Language:    swift eval \'echo "hi"\' | swift run script.shs | swift shell',
     'Packages:    swift install todo | swift registry | swift run-pkg hello',
+    '             swift install swiftfetch | swift run-pkg swiftfetch',
     'Workspace:   swift init myproject | swift completion bash | swift doctor',
     'Passthrough: any builtin, e.g. swift echo hello | swift math "2 + 3"',
     '',

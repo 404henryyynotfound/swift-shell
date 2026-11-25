@@ -14,6 +14,7 @@ const {
 } = require('./interpreter');
 const { builtins, VERSION, evaluateMath, ExitRequest, BuiltinError } = require('./builtins');
 const { PackageManager, PackageError, DEFAULT_HOME } = require('./packages');
+const swiftfetch = require('./swiftfetch');
 const cli = require('./cli');
 
 module.exports = {
@@ -40,5 +41,6 @@ module.exports = {
   PackageManager,
   PackageError,
   DEFAULT_HOME,
+  swiftfetch,
   cli,
 };

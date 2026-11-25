@@ -31,6 +31,7 @@
 
       <nav id="primary-nav" class="primary-nav" data-nav aria-label="Primary navigation">
         <a href="#install">Install</a>
+        <a href="#everywhere">Every platform</a>
         <a href="#commands">swift commands</a>
         <a href="#tour">Language tour</a>
         <a href="#features">Features</a>
@@ -119,6 +120,149 @@ sudo apt install ./swift-shell.deb</code></pre>
       </div>
     </section>
 
+    <!-- EVERY PLATFORM -->
+    <section id="everywhere" class="section" aria-labelledby="everywhere-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="section-kicker">Download for every platform</p>
+          <h2 id="everywhere-title">Download for every platform</h2>
+          <p>Six standalone CLI builds: Linux and macOS on x64 and arm64, Windows on x64 and arm64. Each has a <code>.sha256</code> companion. If a binary target cannot be built, a <code>.tar.gz</code> fallback with the JavaScript sources and launchers is published instead.</p>
+        </div>
+
+        <div class="install-grid">
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">Linux x64</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-linux-x64" aria-label="Copy Linux x64 install command">Copy</button>
+            </div>
+            <pre><code id="cmd-linux-x64">curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-x64 -o swift
+chmod +x swift
+./swift --version</code></pre>
+            <p class="cmd-foot"><a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-x64">Direct binary ↗</a> · <a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-x64.sha256">SHA-256 ↗</a></p>
+          </article>
+
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">Linux arm64</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-linux-arm64" aria-label="Copy Linux arm64 install command">Copy</button>
+            </div>
+            <pre><code id="cmd-linux-arm64">curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-arm64 -o swift
+chmod +x swift
+./swift --version</code></pre>
+            <p class="cmd-foot"><a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-arm64">Direct binary ↗</a> · <a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-arm64.sha256">SHA-256 ↗</a></p>
+          </article>
+
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">macOS x64</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-macos-x64" aria-label="Copy macOS x64 install command">Copy</button>
+            </div>
+            <pre><code id="cmd-macos-x64">curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-x64 -o swift
+chmod +x swift
+./swift --version</code></pre>
+            <p class="cmd-foot"><a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-x64">Direct binary ↗</a> · <a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-x64.sha256">SHA-256 ↗</a></p>
+          </article>
+
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">macOS arm64</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-macos-arm64" aria-label="Copy macOS arm64 install command">Copy</button>
+            </div>
+            <pre><code id="cmd-macos-arm64">curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-arm64 -o swift
+chmod +x swift
+./swift --version</code></pre>
+            <p class="cmd-foot"><a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-arm64">Direct binary ↗</a> · <a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-arm64.sha256">SHA-256 ↗</a></p>
+          </article>
+
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">Windows x64</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-windows-x64" aria-label="Copy Windows x64 install command">Copy</button>
+            </div>
+            <pre><code id="cmd-windows-x64">Invoke-WebRequest https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-x64.exe -OutFile swift.exe
+.\swift.exe --version</code></pre>
+            <p class="cmd-foot"><a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-x64.exe">Direct .exe ↗</a> · <a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-x64.exe.sha256">SHA-256 ↗</a></p>
+          </article>
+
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">Windows arm64</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-windows-arm64" aria-label="Copy Windows arm64 install command">Copy</button>
+            </div>
+            <pre><code id="cmd-windows-arm64">Invoke-WebRequest https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-arm64.exe -OutFile swift.exe
+.\swift.exe --version</code></pre>
+            <p class="cmd-foot"><a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-arm64.exe">Direct .exe ↗</a> · <a href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-arm64.exe.sha256">SHA-256 ↗</a></p>
+          </article>
+        </div>
+
+        <div class="download-card reveal">
+          <div class="download-copy">
+            <p class="section-kicker">Other ways in</p>
+            <h3 id="everywhere-others-title">npm, Snap, .deb and Pi-Apps</h3>
+            <p>Prefer a package manager? These install the same CLI. npm also covers platforms without a standalone build.</p>
+          </div>
+          <div class="download-links">
+            <a class="download-link" href="https://www.npmjs.com/package/swift-shell">
+              <span class="download-icon" aria-hidden="true">◆</span>
+              <span><strong>npm</strong><small>Anywhere Node.js 18+ runs</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="download-link" href="https://snapcraft.io/swift-shell">
+              <span class="download-icon" aria-hidden="true">◈</span>
+              <span><strong>Snap</strong><small>Confined and auto-updating</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell_1.0.0_amd64.deb">
+              <span class="download-icon" aria-hidden="true">▤</span>
+              <span><strong>.deb (amd64 / arm64)</strong><small>Ubuntu and Debian</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/Swift-Shell.zip">
+              <span class="download-icon" aria-hidden="true">▣</span>
+              <span><strong>Pi-Apps</strong><small>Import Swift-Shell.zip</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="install-grid">
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">npm</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-everywhere-npm" aria-label="Copy npm install command">Copy</button>
+            </div>
+            <pre><code id="cmd-everywhere-npm">npm install -g swift-shell
+swift --version</code></pre>
+          </article>
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">snap</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-everywhere-snap" aria-label="Copy snap install command">Copy</button>
+            </div>
+            <pre><code id="cmd-everywhere-snap">sudo snap install swift-shell</code></pre>
+          </article>
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">.deb amd64</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-everywhere-deb" aria-label="Copy apt install command">Copy</button>
+            </div>
+            <pre><code id="cmd-everywhere-deb">curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell_1.0.0_amd64.deb -o swift-shell.deb
+sudo apt install ./swift-shell.deb</code></pre>
+            <p class="cmd-foot">For arm64, swap <code>amd64</code> for <code>arm64</code>.</p>
+          </article>
+          <article class="cmd-card reveal">
+            <div class="cmd-head">
+              <span class="cmd-badge">Pi-Apps</span>
+              <button class="copy-btn" type="button" data-copy="#cmd-everywhere-piapps" aria-label="Copy Pi-Apps download command">Copy</button>
+            </div>
+            <pre><code id="cmd-everywhere-piapps">curl -fsSL https://github.com/404henryyynotfound/swift-shell/releases/latest/download/Swift-Shell.zip -o Swift-Shell.zip
+unzip -o Swift-Shell.zip</code></pre>
+            <p class="cmd-foot">Then import the folder into Pi-Apps.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- COMMANDS -->
     <section id="commands" class="section tour" aria-labelledby="commands-title">
       <div class="container">
@@ -134,7 +278,7 @@ sudo apt install ./swift-shell.deb</code></pre>
           </article>
           <article class="feature-card reveal">
             <h3>Packages built in</h3>
-            <p><code>swift install hello</code>, <code>swift registry</code>, <code>swift search</code>, <code>swift list</code>, <code>swift remove</code> — with a curated offline registry.</p>
+            <p><code>swift install hello</code>, <code>swift install swiftfetch</code>, <code>swift run-pkg swiftfetch</code>, <code>swift registry</code>, <code>swift search</code>, <code>swift list</code>, <code>swift remove</code> — with a curated offline registry of 13 packages.</p>
           </article>
           <article class="feature-card reveal">
             <h3>Workspace helpers</h3>
@@ -146,7 +290,7 @@ sudo apt install ./swift-shell.deb</code></pre>
           </article>
           <article class="feature-card reveal">
             <h3>Tons of packages</h3>
-            <p>Install <code>todo</code>, <code>notes</code>, <code>sysinfo</code>, <code>gitinfo</code>, <code>backup</code>, <code>netcheck</code>, <code>jsonfmt</code>, <code>wordcount</code> and more, all local.</p>
+            <p>Install <code>swiftfetch</code>, <code>todo</code>, <code>notes</code>, <code>sysinfo</code>, <code>gitinfo</code>, <code>backup</code>, <code>netcheck</code>, <code>jsonfmt</code>, <code>wordcount</code> and more, all local. <code>swift swiftfetch</code> prints a neofetch-style readout with an ASCII logo, system details and a colour strip — no install needed.</p>
           </article>
           <article class="feature-card reveal">
             <h3>Friendly help</h3>
@@ -352,22 +496,27 @@ for i in range(1, 4) {
           <div class="download-copy">
             <p class="section-kicker">Ready when you are</p>
             <h2 id="download-title">Make SwiftShell your default today</h2>
-            <p>Every release is published on GitHub, with signed builds for your platform. Pick a package below and start scripting in seconds.</p>
+            <p>Every release publishes six standalone builds — Linux, macOS and Windows on x64 and arm64 — plus npm, Snap, .deb, Pi-Apps and a source archive. Each asset has a SHA-256 companion.</p>
           </div>
           <div class="download-links">
-            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest">
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-macos-arm64">
               <span class="download-icon" aria-hidden="true">◈</span>
-              <span><strong>macOS</strong><small>Universal binary</small></span>
+              <span><strong>macOS arm64</strong><small>Apple Silicon · also x64</small></span>
               <span class="download-arrow" aria-hidden="true">↗</span>
             </a>
-            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest">
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-linux-x64">
               <span class="download-icon" aria-hidden="true">▤</span>
-              <span><strong>Linux</strong><small>x86_64 · .deb · snap</small></span>
+              <span><strong>Linux x64 / arm64</strong><small>Binary · .deb · snap</small></span>
+              <span class="download-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell-windows-x64.exe">
+              <span class="download-icon" aria-hidden="true">⌘</span>
+              <span><strong>Windows x64 / arm64</strong><small>Standalone .exe</small></span>
               <span class="download-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="download-link" href="https://github.com/404henryyynotfound/swift-shell/releases/latest">
-              <span class="download-icon" aria-hidden="true">⌘</span>
-              <span><strong>All releases</strong><small>Source &amp; checksums</small></span>
+              <span class="download-icon" aria-hidden="true">⇩</span>
+              <span><strong>All releases</strong><small>Source, checksums &amp; every asset</small></span>
               <span class="download-arrow" aria-hidden="true">↗</span>
             </a>
           </div>

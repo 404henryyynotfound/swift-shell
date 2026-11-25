@@ -34,6 +34,23 @@
       }
     },
     {
+      "name": "swiftfetch",
+      "version": "1.0.0",
+      "description": "A polished neofetch-style readout of the host, shell, CPU, memory, disk, network and SwiftShell itself.",
+      "category": "system",
+      "author": "SwiftShell contributors",
+      "keywords": [
+        "system",
+        "neofetch",
+        "fetch",
+        "info",
+        "diagnostics"
+      ],
+      "files": {
+        "main.shs": "# swiftfetch - a neofetch-style system report\nswiftfetch\n"
+      }
+    },
+    {
       "name": "todo",
       "version": "1.0.2",
       "description": "A tiny persistent command-line todo list.",

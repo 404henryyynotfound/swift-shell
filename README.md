@@ -2,8 +2,8 @@
 
 SwiftShell is a small, original terminal/shell **language** and interpreter written from scratch in JavaScript. It has **zero runtime dependencies**, runs on **Node.js 18+**, and ships with:
 
-- `swiftshell` — the language REPL, script runner and AST dumper.
-- `swift` — a full command front door (50+ subcommands, builtin passthrough, workspace tools).
+- `swift` — a full command front door (50+ subcommands, builtin passthrough, workspace tools). **Every command starts with `swift`.**
+- `swiftshell` — a compatibility alias with the same REPL and script runner.
 - A package manager with a **bundled, offline registry of 12 packages** — no network access, ever.
 
 > **This project is unrelated to Apple Swift and to the separate `swift-browser` / `swift-tech` products.** It does not import, use or modify them. The `swift` command here is SwiftShell's own CLI.
@@ -14,8 +14,8 @@ SwiftShell is a small, original terminal/shell **language** and interpreter writ
 
 ```sh
 npm i -g swift-shell
-swiftshell -e 'echo "hello from npm"'
-swift --version
+swift eval 'echo "hello from npm"'
+swift --version   # swiftshell --version is the same CLI
 ```
 
 ### apt (.deb from GitHub releases)
@@ -23,7 +23,7 @@ swift --version
 Download the `.deb` from the GitHub releases page and install it:
 
 ```sh
-curl -LO https://github.com/swift-shell/swift-shell/releases/latest/download/swift-shell_1.0.0_amd64.deb
+curl -LO https://github.com/404henryyynotfound/swift-shell/releases/latest/download/swift-shell_1.0.0_amd64.deb
 sudo apt install ./swift-shell_1.0.0_amd64.deb
 ```
 
@@ -37,7 +37,7 @@ sudo snap install swift-shell
 
 ```sh
 cd swift-shell
-node bin/swiftshell.js -e 'echo "hello"'
+node bin/swift.js eval 'echo "hello"'
 node bin/swift.js commands
 ```
 
@@ -51,7 +51,7 @@ The SwiftShell CLI and scripts automatically add `$SWIFTSHELL_HOME/bin` (default
 
 ## Language tour
 
-Run any snippet with `swiftshell -e '...'` or save it in a `.shs` file and run `swiftshell script.shs`.
+Run any snippet with `swift eval '...'` or save it in a `.shs` file and run `swift run script.shs`. The older `swiftshell` alias works too.
 
 ### Variables, strings and interpolation
 
@@ -145,7 +145,7 @@ echo "args: ${args()}"
 ```
 
 ```sh
-swiftshell script.shs one two   # args: one two
+swift run script.shs one two    # args: one two
 swift run script.shs one two    # same
 ```
 

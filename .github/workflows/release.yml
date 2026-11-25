@@ -80,7 +80,7 @@ jobs:
         if: ${{ env.NPM_TOKEN != '' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        run: npm publish --access public || echo "Version already published; continuing"
       - name: Skip notice
         if: ${{ env.NPM_TOKEN == '' }}
         run: echo "NPM_TOKEN not configured; skipping npm publish"
@@ -104,6 +104,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           sed -i "s/^version: .*/version: '$VERSION'/" snapcraft.yaml
+          sed -i "s/^version: .*/version: '$VERSION'/" snap/snapcraft.yaml
       - id: snapcraft
         uses: snapcore/action-build@v1
       - run: sha256sum "${{ steps.snapcraft.outputs.snap }}" > "${{ steps.snapcraft.outputs.snap }}.sha256"

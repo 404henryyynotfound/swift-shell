@@ -1,0 +1,76 @@
+name: swift-shell
+base: core22
+version: '1.0.0'
+summary: The shell language that reads like code
+description: |
+  SwiftShell is an independent, zero-dependency shell language with variables,
+  arrays, functions, loops, conditionals, pipelines, redirection and a bundled
+  package registry. It ships both the `swift` and `swiftshell` commands.
+icon: snap/local/icon.png
+grade: stable
+confinement: strict
+architectures:
+  - build-on: amd64
+    build-for: amd64
+  - build-on: arm64
+    build-for: arm64
+
+apps:
+  swift:
+    command: bin/swift
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
+  swiftshell:
+    command: bin/swiftshell
+    plugs:
+      - home
+      - network
+      - network-bind
+      - removable-media
+
+parts:
+  node:
+    plugin: nil
+    build-packages:
+      - curl
+      - ca-certificates
+      - xz-utils
+    override-build: |
+      set -e
+      node_version="v22.14.0"
+      case "$CRAFT_TARGET_ARCH" in
+        amd64) node_arch=x64 ;;
+        arm64) node_arch=arm64 ;;
+        *) echo "Unsupported target architecture: $CRAFT_TARGET_ARCH" >&2; exit 1 ;;
+      esac
+      node_tar="node-${node_version}-linux-${node_arch}.tar.xz"
+      curl -fsSL "https://nodejs.org/dist/${node_version}/${node_tar}" \
+        -o "${CRAFT_PART_BUILD}/${node_tar}"
+      mkdir -p "${CRAFT_PART_INSTALL}/opt"
+      tar -xJf "${CRAFT_PART_BUILD}/${node_tar}" -C "${CRAFT_PART_INSTALL}/opt"
+      mv "${CRAFT_PART_INSTALL}/opt/node-${node_version}-linux-${node_arch}" \
+        "${CRAFT_PART_INSTALL}/opt/node"
+
+  app:
+    plugin: nil
+    source: .
+    override-build: |
+      set -e
+      base="${CRAFT_PART_INSTALL}/opt/swift-shell"
+      mkdir -p "$base/bin" "$base/src"
+      cp -R "${CRAFT_PART_SRC}/bin/." "$base/bin/"
+      cp -R "${CRAFT_PART_SRC}/src/." "$base/src/"
+      cp "${CRAFT_PART_SRC}/registry.json" "$base/registry.json"
+      cp "${CRAFT_PART_SRC}/package.json" "$base/package.json"
+      cp "${CRAFT_PART_SRC}/README.md" "$base/README.md"
+      chmod +x "$base/bin/"*.js
+
+  wrappers:
+    plugin: dump
+    source: snap/local/wrappers
+    organize:
+      swift: bin/swift
+      swiftshell: bin/swiftshell

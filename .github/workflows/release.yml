@@ -126,8 +126,19 @@ jobs:
         with:
           path: release-assets
           merge-multiple: true
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: release-assets/*
-          generate_release_notes: true
-          fail_on_unmatched_files: false
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: v${{ needs.archive.outputs.version }}
+        run: |
+          for attempt in 1 2 3; do
+            if gh release view "$TAG" >/dev/null 2>&1; then break; fi
+            if gh release create "$TAG" --generate-notes --title "$TAG"; then break; fi
+            sleep $((attempt * 5))
+          done
+          for attempt in 1 2 3; do
+            if gh release upload "$TAG" release-assets/* --clobber; then exit 0; fi
+            sleep $((attempt * 5))
+          done
+          echo "Failed to upload release assets" >&2
+          exit 1
